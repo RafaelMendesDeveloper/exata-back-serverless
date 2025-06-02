@@ -57,6 +57,9 @@ export const verifyTokenService = async (email: string, token: string) => {
         throw new Error('erro ao obter e-mail.');
     }
 
+    console.log('USER TOKEN: ' + user.lastToken);
+    console.log('SENT TOKEN: ' + token);
+
     if(user.lastToken != token){
         throw new Error('token inválido!');
     }

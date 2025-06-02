@@ -32,6 +32,7 @@ router.post('/send-token', async (req, res) => {
     await generateTokenService(req.body.email);
     res.sendStatus(200);
   } catch (e: any) {
+    console.log(e);
     res.status(400).json({ error: e.message });
   }
 });
