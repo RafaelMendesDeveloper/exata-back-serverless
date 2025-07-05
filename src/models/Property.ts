@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const PropertySchema = new mongoose.Schema({
+const PropertySchema = new mongoose.Schema(
+  {
     nome: { type: String, required: true },
     tipo: { type: String, required: true },
     aluguel: { type: Number, required: true },
@@ -11,7 +12,13 @@ const PropertySchema = new mongoose.Schema({
     dormitorios: { type: Number, required: true },
     banheiros: { type: Number, required: true },
     vagasGaragem: { type: Number, required: true },
-    others: { type: String }
-}, { timestamps: true });
+    imagens: [{ type: String, required: true }],
+    area: { type: Number, required: true }, 
+    ativo: { type: Boolean, default: true },
+    descricao: { type: String },
+    others: { type: String },
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model('Property', PropertySchema);
+export default mongoose.model("Property", PropertySchema);

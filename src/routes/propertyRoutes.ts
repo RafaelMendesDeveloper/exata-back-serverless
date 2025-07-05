@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import multer from "multer";
 import {
   createProperty,
   getAllProperties,
@@ -8,10 +9,12 @@ import {
 } from "../services/propertyService";
 
 const router = express.Router();
+const upload = multer();
 
-router.post("/", async (req, res) => {
+router.post("/", upload.array("imagens"), async (req, res) => {
   try {
-    const property = await createProperty(req.body);
+    const files = req.files as Express.Multer.File[];
+    const property = await createProperty(req.body, files);
     res.status(201).json(property);
   } catch (e: any) {
     res.status(400).json({ error: e.message });
