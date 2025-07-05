@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
     const token = await loginService(req.body.email, req.body.password);
     res.json({ token });
   } catch (e: any) {
-    res.status(400).json({ error: e.message });
+    res.status(401).json({ error: e.message });
   }
 });
 
@@ -23,17 +23,19 @@ router.post('/register', async (req, res) => {
     await registerService(req.body.email, req.body.password);
     res.sendStatus(201);
   } catch (e: any) {
-    res.status(400).json({ error: e.message });
+    res.status(401).json({ error: e.message });
   }
 });
 
 router.post('/send-token', async (req, res) => {
+  console.log('SEND TOKEN =======> ', req.body.email);
+  
   try {
     await generateTokenService(req.body.email);
+    console.log('Token enviado com sucesso para o email:', req.body.email);
     res.sendStatus(200);
   } catch (e: any) {
-    console.log(e);
-    res.status(400).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 });
 
@@ -42,7 +44,7 @@ router.post('/verify-token', async (req, res) => {
     await verifyTokenService(req.body.email, req.body.token);
     res.sendStatus(200);
   } catch (e: any) {
-    res.status(400).json({ error: e.message });
+    res.status(401).json({ error: e.message });
   }
 });
 
@@ -51,7 +53,7 @@ router.post('/redefine-password', async (req, res) => {
     await redefinePasswordService(req.body.email, req.body.password);
     res.sendStatus(200);
   } catch (e: any) {
-    res.status(400).json({ error: e.message });
+    res.status(401).json({ error: e.message });
   }
 });
 
