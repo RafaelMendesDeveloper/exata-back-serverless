@@ -17,6 +17,10 @@ export const getAllProperties = async () => {
   return Property.find();
 };
 
+export const getActiveProperties = async () => {
+  return Property.find({ativo: true});
+};
+
 export const getPropertyById = async (id: string) => {
   return Property.findById(id);
 };

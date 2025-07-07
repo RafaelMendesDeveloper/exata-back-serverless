@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 
@@ -18,8 +21,7 @@ export const uploadBufferToS3 = async (buffer: Buffer, mimetype: string): Promis
     Bucket: bucket,
     Key: `${folder}${fileName}`,
     Body: buffer,
-    ContentType: mimetype,
-    ACL: "public-read",
+    ContentType: mimetype
   });
 
   await s3.send(command);
