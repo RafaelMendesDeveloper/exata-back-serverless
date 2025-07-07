@@ -22,6 +22,19 @@ router.post("/", upload.array("imagens"), async (req, res) => {
   }
 });
 
+router.put("/:id", upload.array("imagens"), async (req, res): Promise<any> => {
+  try {
+    const files = req.files as Express.Multer.File[];
+    const property = await updateProperty(req.params.id, req.body, files);
+    if (!property) {
+      return res.status(404).json({ error: "Imóvel não encontrado" });
+    }
+    res.json(property);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const properties = await getAllProperties();
@@ -43,18 +56,6 @@ router.get("/active", async (req, res) => {
 router.get("/:id", async (req, res): Promise<any> => {
   try {
     const property = await getPropertyById(req.params.id);
-    if (!property) {
-      return res.status(404).json({ error: "Imóvel não encontrado" });
-    }
-    res.json(property);
-  } catch (e: any) {
-    res.status(400).json({ error: e.message });
-  }
-});
-
-router.put("/:id", async (req, res): Promise<any> => {
-  try {
-    const property = await updateProperty(req.params.id, req.body);
     if (!property) {
       return res.status(404).json({ error: "Imóvel não encontrado" });
     }

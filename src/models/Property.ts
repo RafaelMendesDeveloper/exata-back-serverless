@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const PropertySchema = new mongoose.Schema(
+const PropertySchema = new mongoose.Schema( 
   {
     nome: { type: String, required: true },
     tipo: { type: String, required: true },
