@@ -6,6 +6,7 @@ import {
   getPropertyById,
   updateProperty,
   deleteProperty,
+  getActiveProperties,
 } from "../services/propertyService";
 
 const router = express.Router();
