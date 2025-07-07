@@ -17,6 +17,6 @@ app.use('/property', propertyRoutes);
 mongoose.connect(process.env.MONGO_URI!)
   .then(() => {
     console.log('MongoDB conectado!');
-    app.listen(3000, () => console.log('API rodando em http://localhost:3000'));
+    app.listen(3333, () => console.log('API rodando em http://localhost:3333'));
   })
   .catch(err => console.error('Erro ao conectar ao MongoDB', err));

@@ -30,6 +30,15 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/active", async (req, res) => {
+  try {
+    const properties = await getActiveProperties();
+    res.json(properties);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
 router.get("/:id", async (req, res): Promise<any> => {
   try {
     const property = await getPropertyById(req.params.id);
