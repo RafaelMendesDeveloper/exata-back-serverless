@@ -1,12 +1,16 @@
 import Property from "../models/Property";
 import { uploadBufferToS3 } from "../utils/s3";
+import { addWatermark } from "./pictureService";
 
 export const createProperty = async (
   data: any,
   imagens: { buffer: Buffer; mimetype: string }[]
 ) => {
   const urls = await Promise.all(
-    imagens.map((img) => uploadBufferToS3(img.buffer, img.mimetype))
+    imagens.map(async (img) => {
+      const imgWithWaterMark = await addWatermark(img.buffer);
+      return uploadBufferToS3(imgWithWaterMark, img.mimetype);
+    })
   );
   const property = new Property({ ...data, imagens: urls });
   await property.save();
