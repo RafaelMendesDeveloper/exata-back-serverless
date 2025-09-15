@@ -1,5 +1,6 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import multer from "multer";
+
 import {
   createProperty,
   getAllProperties,
@@ -9,10 +10,13 @@ import {
   getActiveProperties,
 } from "../services/propertyService";
 
+import { authenticateToken } from "../middleware/authenticateToken";
+
+
 const router = express.Router();
 const upload = multer();
 
-router.post("/", upload.array("imagens"), async (req, res) => {
+router.post("/", authenticateToken, upload.array("imagens"), async (req, res) => {
   try {
     const files = req.files as Express.Multer.File[];
     const property = await createProperty(req.body, files);
@@ -22,7 +26,7 @@ router.post("/", upload.array("imagens"), async (req, res) => {
   }
 });
 
-router.put("/:id", upload.array("imagens"), async (req, res): Promise<any> => {
+router.put("/:id", authenticateToken, upload.array("imagens"), async (req, res): Promise<any> => {
   try {
     const files = req.files as Express.Multer.File[];
     const property = await updateProperty(req.params.id, req.body, files);
@@ -35,7 +39,7 @@ router.put("/:id", upload.array("imagens"), async (req, res): Promise<any> => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
     const properties = await getAllProperties();
     res.json(properties);
@@ -65,7 +69,7 @@ router.get("/:id", async (req, res): Promise<any> => {
   }
 });
 
-router.delete("/:id", async (req, res): Promise<any> => {
+router.delete("/:id", authenticateToken, async (req, res): Promise<any> => {
   try {
     const property = await deleteProperty(req.params.id);
     if (!property) {

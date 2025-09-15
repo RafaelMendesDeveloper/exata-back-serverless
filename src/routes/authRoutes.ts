@@ -1,4 +1,5 @@
 import express from 'express';
+
 import {
   loginService,
   registerService,
@@ -6,6 +7,8 @@ import {
   verifyTokenService,
   redefinePasswordService
 } from '../services/authService';
+
+import { authenticateToken } from '../middleware/authenticateToken';
 
 const router = express.Router();
 
@@ -18,7 +21,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', authenticateToken, async (req, res) => {
   try {
     await registerService(req.body.email, req.body.password);
     res.sendStatus(201);
@@ -28,11 +31,8 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/send-token', async (req, res) => {
-  console.log('SEND TOKEN =======> ', req.body.email);
-  
   try {
     await generateTokenService(req.body.email);
-    console.log('Token enviado com sucesso para o email:', req.body.email);
     res.sendStatus(200);
   } catch (e: any) {
     res.status(404).json({ error: e.message });
@@ -48,7 +48,7 @@ router.post('/verify-token', async (req, res) => {
   }
 });
 
-router.post('/redefine-password', async (req, res) => {
+router.post('/redefine-password', authenticateToken, async (req, res) => {
   try {
     await redefinePasswordService(req.body.email, req.body.password);
     res.sendStatus(200);
