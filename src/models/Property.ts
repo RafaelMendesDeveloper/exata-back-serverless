@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const PropertySchema = new mongoose.Schema( 
+const PropertySchema = new mongoose.Schema(
   {
     nome: { type: String, required: true },
     tipo: { type: String, required: true },
@@ -17,6 +17,15 @@ const PropertySchema = new mongoose.Schema(
     ativo: { type: Boolean, default: true },
     favorito: { type: Boolean, default: false },
     descricao: { type: String },
+    cep: { type: String, required: true },
+    endereco: { type: String, required: true },
+    numero: { type: String, required: true },
+    complemento: { type: String },
+    bairro: { type: String, required: true },
+    cidade: { type: String, required: true },
+    pontoReferencia: { type: String },
+    latitude: { type: Number },
+    longitude: { type: Number },
     others: { type: String },
   },
   { timestamps: true }
