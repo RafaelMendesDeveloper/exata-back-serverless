@@ -49,7 +49,10 @@ export const updateProperty = async (
   return Property.findByIdAndUpdate(id, data, { new: true });
 };
 
-
 export const deleteProperty = async (id: string) => {
   return Property.findByIdAndUpdate(id, { ativo: false }, { new: true });
+};
+
+export const favoriteProperty = async (id: string) => {
+  return Property.findByIdAndUpdate(id, { favorito: true });
 };
