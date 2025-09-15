@@ -9,6 +9,7 @@ import {
 } from '../services/authService';
 
 import { authenticateToken } from '../middleware/authenticateToken';
+import User from '../models/User';
 
 const router = express.Router();
 
@@ -52,8 +53,8 @@ router.post('/verify-token', async (req, res) => {
   }
 });
 
-// Rota para redefinir senha (protegida por autenticação)
-router.post('/redefine-password', authenticateToken, async (req, res) => {
+// Rota para redefinir senha
+router.post('/redefine-password', async (req, res) => {
   try {
     await redefinePasswordService(req.body.email, req.body.password);
     res.sendStatus(200);
@@ -61,5 +62,31 @@ router.post('/redefine-password', authenticateToken, async (req, res) => {
     res.status(401).json({ error: e.message });
   }
 });
+
+// Rota para obter usuario
+router.get("/me", authenticateToken, (async (req, res): Promise<void> => {
+  try {
+    const userPayload = (req as any).user;
+
+    const user = await User.findById(userPayload.id).select("-password");
+    if (!user) {
+      res.status(404).json({ error: "Usuário não encontrado" });
+      return;
+    }
+
+    res.json({
+      success: true,
+      data: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Erro ao buscar usuário:", error);
+    res.status(500).json({ error: "Erro interno no servidor" });
+  }
+}) as express.RequestHandler);
 
 export default router;

@@ -66,7 +66,7 @@ export const redefinePasswordService = async (
   email: string,
   password: string
 ) => {
-  let user: any = User.findOne({ email });
+  let user: any = await User.findOne({ email });
 
   if (!user) {
     throw new Error("email inválidos!");
@@ -74,6 +74,15 @@ export const redefinePasswordService = async (
 
   const hashedPassword = await bcrypt.hash(password, 10);
   user.password = hashedPassword;
+  user.lastToken = undefined;
 
   await user.save();
+};
+
+export const getMeService = async (id: string) => {
+  const user = await User.findById(id).select("-password");
+  if (!user) {
+    throw new Error("Usuário não encontrado");
+  }
+  return user;
 };

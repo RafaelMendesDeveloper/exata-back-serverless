@@ -26,6 +26,7 @@ const PropertySchema = new mongoose.Schema(
     pontoReferencia: { type: String },
     latitude: { type: Number },
     longitude: { type: Number },
+    criadoPor: { type: String, required: true },
     others: { type: String },
   },
   { timestamps: true }
