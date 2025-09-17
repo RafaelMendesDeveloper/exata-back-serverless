@@ -42,7 +42,7 @@ export const generateTokenService = async (email: string) => {
     throw new Error("email inválidos!");
   }
 
-  const number = Math.floor(Math.random() * 10000); 
+  const number = Math.floor(Math.random() * 10000);
   user.lastToken = number.toString().padStart(4, "0");
 
   await user.save();
